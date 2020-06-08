@@ -151,23 +151,23 @@ public class Principal extends JFrame implements ActionListener, ItemListener {
     }
 
     public void leer(File archivo) {
-        String[] datos = new String[4];
-        int cont = 0;
-        try (Scanner f = new Scanner(archivo)) {
-            while (f.hasNext()) {
-                datos[cont] = f.nextLine();
-                cont++;
+        if (archivo.exists()) {
+            String[] datos = new String[4];
+            int cont = 0;
+            try (Scanner f = new Scanner(archivo)) {
+                while (f.hasNext()) {
+                    datos[cont] = f.nextLine();
+                    cont++;
+                }
+                operaciones(Double.parseDouble(datos[0]), Double.parseDouble(datos[1]), Integer.parseInt(datos[3]),
+                        datos[2]);
+                restaurar(datos);
+            } catch (IOException exc) {
+                System.err.println("Error de acceso al archivo: " + exc.getMessage());
+            } catch (NumberFormatException exc) {
+                System.err.println("tas crazy");
             }
-
-        } catch (IOException exc) {
-            System.err.println("Error de acceso al archivo: " + exc.getMessage());
         }
-        for (int i = 0; i < datos.length; i++) {
-            System.out.println(datos[i]);
-        }
-        operaciones(Double.parseDouble(datos[0]), Double.parseDouble(datos[1]), Integer.parseInt(datos[3]), datos[2]);
-        restaurar(datos);
-
     }
 
     public void restaurar(String[] datos) {
@@ -199,7 +199,9 @@ public class Principal extends JFrame implements ActionListener, ItemListener {
                 operaciones(Double.parseDouble(txt1.getText()), Double.parseDouble(txt2.getText()), d,
                         operacionSeleccionada);
             } catch (NumberFormatException exc) {
-                System.err.println("Introduce un número entero.");
+                System.err.println("Introduce número real.");
+                lblInfo.setText("Introduce numeros");
+                lblInfo.setVisible(true);
             }
             guardar();
         }
